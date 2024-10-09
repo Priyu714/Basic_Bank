@@ -1,8 +1,11 @@
 package com.example.User.controller;
 
 import com.example.User.entity.User;
+import com.example.User.exception.UserNotFoundException;
 import com.example.User.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +41,11 @@ public class UserController {
     @PutMapping("/updateUser/{id}")
     public User updateUser(@RequestBody User user,@PathVariable Long id){
         return  userService.updateUser(user,id);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handleUserNotFound(UserNotFoundException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 

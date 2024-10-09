@@ -1,6 +1,7 @@
 package com.example.User.service;
 
 import com.example.User.entity.User;
+import com.example.User.exception.UserNotFoundException;
 import com.example.User.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,14 @@ public class UserService {
     }
 
     public User getUserById(Long id) {
-        return userRepository.findById(id).get();
+        return userRepository.findById(id).orElseThrow(()
+                ->new UserNotFoundException("User "+ id +" is not present"));
     }
 
     public String deleteUserById(Long id) {
+        if(! userRepository.existsById(id))
+            throw new UserNotFoundException("User "+ id +" is not found ");
+
         userRepository.deleteById(id);
         return id + " is deleted by successfull";
     }
@@ -39,12 +44,9 @@ public class UserService {
         if (existingUser.isPresent()) {
             user.setId(id);
             return userRepository.save(user);
-
         } else {
-            throw new RuntimeException("invalid userId and userData ");
-
+            throw new UserNotFoundException("invalid "+ id +" userId and userData ");
         }
-
 
     }
 
