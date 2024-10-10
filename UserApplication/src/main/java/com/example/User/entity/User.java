@@ -17,7 +17,7 @@ public class User {
     @NotNull(message = "Enter the valid Id ")
     private Long id;
 
-    @NotEmpty(message = "Should not null")
+    @NotEmpty(message = "name should not  be null")
     private String name;
 
     @NotEmpty(message ="Mobile Number Should not Empty or null")
