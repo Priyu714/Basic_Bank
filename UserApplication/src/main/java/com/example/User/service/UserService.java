@@ -32,22 +32,17 @@ public class UserService {
     public String deleteUserById(Long id) {
         if(! userRepository.existsById(id))
             throw new UserNotFoundException("User "+ id +" is not found ");
-
         userRepository.deleteById(id);
         return id + " is deleted by successfull";
     }
 
     public User updateUser(User user, Long id) {
-
         Optional<User> existingUser = userRepository.findById(id);
-
         if (existingUser.isPresent()) {
             user.setId(id);
             return userRepository.save(user);
         } else {
             throw new UserNotFoundException("invalid "+ id +" userId and userData ");
         }
-
     }
-
 }
